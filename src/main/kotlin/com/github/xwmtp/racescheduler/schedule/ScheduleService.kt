@@ -5,12 +5,20 @@ import org.springframework.stereotype.Service
 @Service
 class ScheduleService(private val scheduleRepository: ScheduleRepository) {
 
-    fun scheduleRace(race: Race): Race {
-        return scheduleRepository.save(race)
-    }
-
     fun getFullSchedule(): List<Race> {
         val races = scheduleRepository.findAll()
         return races.sortedBy { it.startTime }
+    }
+
+    fun scheduleRace(newRace: NewRace): Race {
+        return scheduleRepository.save(toRaceEntity(newRace))
+    }
+
+    fun updateRace(race: Race): Race? {
+        val scheduledRace = scheduleRepository.findById(race.id)
+        if (scheduledRace === null) {
+            return null
+        }
+        return scheduleRepository.save(race)
     }
 }

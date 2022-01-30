@@ -10,5 +10,6 @@ interface ScheduleRepository : Repository<Race, UUID> {
 
     fun findAll(): List<Race>
 
+    fun findById(id: UUID): Race?
 
 }

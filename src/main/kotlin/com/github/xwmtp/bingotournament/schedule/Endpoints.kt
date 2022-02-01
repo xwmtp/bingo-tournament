@@ -1,4 +1,4 @@
-package com.github.xwmtp.racescheduler.schedule
+package com.github.xwmtp.bingotournament.schedule
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

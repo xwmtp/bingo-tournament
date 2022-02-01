@@ -1,10 +1,10 @@
-package com.github.xwmtp.racescheduler
+package com.github.xwmtp.bingotournament
 
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
 
 @SpringBootTest
-class RaceSchedulerApplicationTests {
+class BingoTournamentApplicationTests {
 
 	@Test
 	fun contextLoads() {

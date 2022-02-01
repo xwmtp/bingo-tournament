@@ -1,11 +1,11 @@
-package com.github.xwmtp.racescheduler
+package com.github.xwmtp.bingotournament
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class RaceSchedulerApplication
+class BingoTournamentApplication
 
 fun main(args: Array<String>) {
-	runApplication<RaceSchedulerApplication>(*args)
+	runApplication<BingoTournamentApplication>(*args)
 }

@@ -1,0 +1,36 @@
+name: Build and publish NPM Package
+
+on:
+  - push
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare Git
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Prepare Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16
+      - name: Prepare Java
+        uses: actions/setup-java@v2
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: OpenAPI Generation
+        run: ./gradlew openApiNpm
+      - name: Install Packages
+        working-directory: ./npm
+        run: npm install
+      - name: Build
+        working-directory: ./npm
+        run: npm run prepare
+      - name: Publish
+        working-directory: ./npm
+        run: |
+          npm publish --@xwmtp:registry=https://npm.pkg.github.com --dry-run --access=public
+        env:
+          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}

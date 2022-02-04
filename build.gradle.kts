@@ -98,6 +98,6 @@ tasks.create<GenerateTask>("openApiNpm") {
   outputDir.set("$rootDir/npm")
 
   configOptions.set(mapOf(
-      "npmName" to "xwmtp/bingo-tournament",
+      "npmName" to "@xwmtp/bingo-tournament",
   ))
 }

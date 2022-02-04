@@ -1,0 +1,15 @@
+openapi: 3.0.3
+
+info:
+  title: Bingo Tournament API
+  version: 0.0.1
+
+paths:
+  /health:
+    get:
+      summary: Health Endpoint
+      description: Returns a success immediately
+      operationId: getHealth
+      responses:
+        204:
+          description: The application is running

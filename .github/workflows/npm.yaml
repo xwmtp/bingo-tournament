@@ -6,6 +6,7 @@ on:
       - master
     paths:
       - api/**.yaml
+      - .github/workflows/npm.yaml
 
 jobs:
   publish:
@@ -35,6 +36,10 @@ jobs:
       - name: Publish
         working-directory: ./npm
         run: |
-          npm publish --@xwmtp:registry=https://npm.pkg.github.com --access=public
+          npx npm-login-noninteractive && npm publish --access=public
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_USER: xwmtp
+          NPM_PASS: ${{ secrets.GITHUB_TOKEN }}
+          NPM_EMAIL: xwillmtp@gmail.com
+          NPM_REGISTRY: https://npm.pkg.github.com

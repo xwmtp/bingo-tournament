@@ -1,7 +1,11 @@
 name: Build and publish NPM Package
 
 on:
-  - push
+  push:
+    branches:
+      - master
+    paths:
+      - api/**.yaml
 
 jobs:
   publish:
@@ -31,6 +35,6 @@ jobs:
       - name: Publish
         working-directory: ./npm
         run: |
-          npm publish --@xwmtp:registry=https://npm.pkg.github.com --dry-run --access=public
+          npm publish --@xwmtp:registry=https://npm.pkg.github.com --access=public
         env:
           NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}

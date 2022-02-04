@@ -20,6 +20,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 16
+          registry-url: https://npm.pkg.github.com
+          scope: "@xwmtp"
       - name: Prepare Java
         uses: actions/setup-java@v2
         with:
@@ -35,11 +37,6 @@ jobs:
         run: npm run prepare
       - name: Publish
         working-directory: ./npm
-        run: |
-          npx npm-login-noninteractive && npm publish --access=public
+        run: npm publish --access=public
         env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_USER: xwmtp
-          NPM_PASS: ${{ secrets.GITHUB_TOKEN }}
-          NPM_EMAIL: xwillmtp@gmail.com
-          NPM_REGISTRY: https://npm.pkg.github.com
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

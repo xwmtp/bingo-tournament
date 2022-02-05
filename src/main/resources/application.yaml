@@ -1,6 +1,12 @@
+bingo:
+  oauth:
+    racetime:
+      base-url: http://localhost:8000
+
 spring:
+
   datasource:
-    url: jdbc:h2:file:./data/raceSchedule
+    url: jdbc:h2:file:./data
     driverClassName: org.h2.Driver
     username: sa
     password: password
@@ -8,6 +14,27 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
+
   mvc:
     converters:
       preferred-json-mapper: gson
+
+  security:
+    oauth2:
+      client:
+        provider:
+          racetime:
+            authorizationUri: "http://localhost:8000/o/authorize"
+            tokenUri: "http://localhost:8000/o/token"
+            userInfoUri: "http://localhost:8000/o/userinfo"
+        #            authorizationUri: "{bingo.oauth.racetime.base-url}/o/authorize"
+        #            tokenUri: "{bingo.oauth.racetime.base-url}/o/token"
+        #            userInfoUri: "{bingo.oauth.racetime.base-url}/o/userinfo"
+        registration:
+          racetime:
+            clientAuthenticationMethod: post
+            authorizationGrantType: authorization_code
+            scope:
+              - read
+            redirectUri: "{baseUrl}/login/oauth2/code/racetime"
+            clientName: OoT Bingo Tournament

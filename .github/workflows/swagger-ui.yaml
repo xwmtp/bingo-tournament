@@ -1,0 +1,29 @@
+name: Build and publish Swagger Documentaion
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - api/**.yaml
+      - .github/workflows/swagger-ui.yaml
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Prepare Git
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Build Swagger UI
+        uses: Legion2/swagger-ui-action@v1
+        with:
+          output: swagger-ui
+          spec-file: api/bingo-tournament.yaml
+      - name: Deploy to GH Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: swagger-ui

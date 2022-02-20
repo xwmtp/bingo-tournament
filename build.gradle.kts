@@ -41,11 +41,12 @@ dependencies {
   implementation("org.springframework.boot:spring-boot-starter-data-jpa")
   implementation("org.springframework.boot:spring-boot-starter-security")
   implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
+  implementation("org.springframework.session:spring-session-jdbc")
 
   implementation("org.jetbrains.kotlin:kotlin-reflect")
   implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-  implementation("com.google.code.gson:gson:2.8.9")
+  implementation("com.google.code.gson:gson:2.9.0")
 
   implementation("io.springfox:springfox-swagger-ui:3.0.0")
   implementation("io.springfox:springfox-oas:3.0.0")

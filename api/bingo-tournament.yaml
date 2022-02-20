@@ -5,6 +5,10 @@ info:
   description: API used to schedule races and query race results
   version: 0.0.1
 
+servers:
+  - url: http://localhost:8080/api
+    description: Local development environment
+
 paths:
   /health:
     get:
@@ -14,3 +18,36 @@ paths:
       responses:
         204:
           description: The application is running
+  /user:
+    get:
+      summary: Get logged in user
+      description: Returns the details of the current user, if logged in.
+      operationId: getUser
+      responses:
+        200:
+          description: The user details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        403:
+          description: No user logged in
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        avatar:
+          type: string
+          format: uri
+        twitchChannel:
+          type: string
+          format: uri
+      required:
+        - id
+        - name

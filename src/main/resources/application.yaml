@@ -38,3 +38,10 @@ spring:
               - read
             redirectUri: "{baseUrl}/login/oauth2/code/racetime"
             clientName: OoT Bingo Tournament
+
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: always
+    timeout:
+      seconds: 3600

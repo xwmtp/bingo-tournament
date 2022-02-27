@@ -40,3 +40,8 @@ Run your application with the argument `--spring.profiles.active=local`.
 
 To authenticate call the endpoint `/login/racetime`. You will be redirected to your local racetime instance where you
 can log in and allow access for the application.
+
+## CSRF Protection
+
+The endpoints are protected against CSRF. Therefore all `POST`, `PUT`, and `PATCH` requests must send the contents of
+the `XSRF-TOKEN` cookie as a header called `X-XSRF-TOKEN`.

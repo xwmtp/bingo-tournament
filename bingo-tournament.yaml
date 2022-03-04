@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.3
+  version: 0.0.4
 
 servers:
   - url: http://localhost:8080/api
@@ -30,8 +30,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/User"
-        403:
+        401:
           description: No user logged in
+  /entrants:
+    get:
+      summary: Get entrant list
+      description: Returns a list of all users with the ENTRANT role. Only administrators can retrieve this information.
+      operationId: getEntrants
+      responses:
+        200:
+          description: The entrant list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        401:
+          description: No user logged in
+        403:
+          description: Insufficient rights
   /signup:
     post:
       summary: Sign up for the tournament
@@ -40,7 +58,16 @@ paths:
       responses:
         204:
           description: User is signed up
-        403:
+        401:
+          description: No user logged in
+    delete:
+      summary: Withdraw from the tournament
+      description: Withdraws the current user from the tournament
+      operationId: withdraw
+      responses:
+        204:
+          description: User is withdrawn
+        401:
           description: No user logged in
 
 components:

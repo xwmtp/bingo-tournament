@@ -5,9 +5,9 @@
 ### Racetime
 
 Spin up a local development environment of *racetime.gg* by following
-[their instructions](https://github.com/racetimeGG/racetime-app#quick-setup-guide). After launching the application
-navigate to http://localhost:8000/admin and click on the "+" button in the line "Applications". Set the following
-options:
+[their instructions](https://github.com/racetimeGG/racetime-app#quick-setup-guide). Do create an admin user, it is
+needed to set up the OAuth application. After launching the application navigate to http://localhost:8000/admin and
+click on the "+" button in the line "Applications". Set the following options:
 
 | Option                       | Value                                            |
 |------------------------------|--------------------------------------------------|
@@ -22,6 +22,11 @@ Create a file called `src/main/resources/application-local.yaml` with the follow
 with the data from your local racetime instance).
 
 ```yaml
+bingo:
+  users:
+    admins:
+      - <your admin user's ID>
+
 spring:
   security:
     oauth2:

@@ -1,5 +1,6 @@
 package com.github.xwmtp.bingotournament.oauth.racetime
 
+import com.github.xwmtp.bingotournament.oauth.OauthProperties
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -13,6 +14,7 @@ import org.springframework.web.client.exchange
 @Component
 class RacetimeUserService(
     private val restOperations: RestOperations,
+    private val properties: OauthProperties,
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
   override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User? {
@@ -27,6 +29,6 @@ class RacetimeUserService(
     return restOperations
         .exchange<RacetimeUser>(userInfoUri, HttpMethod.GET, headers)
         .body
-        ?.asOauthUser()
+        ?.asOauthUser(properties.racetime.baseUrl)
   }
 }

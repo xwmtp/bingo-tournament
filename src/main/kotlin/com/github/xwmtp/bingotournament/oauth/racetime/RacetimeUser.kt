@@ -12,5 +12,6 @@ data class RacetimeUser(
     val twitchChannel: URI?,
 ) {
 
-  fun asOauthUser() = TournamentOauthUser(id, name, avatar, twitchChannel)
+  fun asOauthUser(racetimeBaseUrl: String) =
+      TournamentOauthUser(id, name, avatar?.let { URI.create("${racetimeBaseUrl}$it") }, twitchChannel)
 }

@@ -4,6 +4,10 @@ bingo:
   oauth:
     racetime:
       base-url: http://localhost:8000
+  users:
+    admins:
+      - d17DexWEKg3ak64R
+      - pRbOXG3ykOWZVKq1
 
 spring:
 

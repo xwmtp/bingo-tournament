@@ -1,13 +1,12 @@
 package com.github.xwmtp.bingotournament.user
 
-import com.github.xwmtp.api.model.User
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.oauth2.core.user.OAuth2User
 import java.io.Serializable
 import java.net.URI
 
 class TournamentOauthUser(
-    private val id: String,
+    val id: String,
     private val username: String,
     private val avatarUrl: URI?,
     private val twitchChannel: URI?,
@@ -19,5 +18,7 @@ class TournamentOauthUser(
 
   override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableSetOf()
 
-  fun inApiFormat() = User(id, username, avatarUrl, twitchChannel)
+  fun newDbUser() = DbUser(
+      id, username, avatarUrl.toString(), twitchChannel.toString(),
+  )
 }

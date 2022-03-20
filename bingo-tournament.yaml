@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.4
+  version: 0.0.5
 
 servers:
   - url: http://localhost:8080/api
@@ -69,6 +69,102 @@ paths:
           description: User is withdrawn
         401:
           description: No user logged in
+  /matches:
+    get:
+      summary: Load match data
+      description: Returns a list of all matches of the tournament. It is possible to filter the list by state and/or the currecnt user.
+      operationId: getAllRaces
+      parameters:
+        - name: filter
+          required: false
+          in: query
+          description: State for matches to be filtered by
+          schema:
+            $ref: "#/components/schemas/MatchState"
+        - name: onlyLoggedIn
+          required: false
+          in: query
+          description: Filter only for matches of the logged in user
+          schema:
+            type: boolean
+            default: false
+      responses:
+        200:
+          description: List of matches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  $ref: "#/components/schemas/Match"
+    post:
+      summary: Add matches to the tournament
+      description: Allows admisitrators to add mutliple matches to the ongoing tournament.
+      operationId: addMatches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                $ref: "#/components/schemas/NewMatch"
+      responses:
+        200:
+          description: Matches successfully added
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  $ref: "#/components/schemas/Match"
+        403:
+          description: Insufficient rights
+    delete:
+      summary: Delete matches from the tournament
+      description: Allows administrators to delete multiple matches from the tournament
+      operationId: deleteMatches
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                format: uuid
+      responses:
+        204:
+          description: Matches successfully deleted
+        403:
+          description: Insufficient rights
+        404:
+          description: At least one match was not found
+    put:
+      summary: Update a match
+      description: Allows administrators to update the information of a single match
+      operationId: updateMatch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "#/components/schemas/UpdateMatch"
+      responses:
+        200:
+          description: Match successfully updated
+          content:
+            application/json:
+              schema:
+                type: object
+                $ref: "#/components/schemas/Match"
+        403:
+          description: Insufficient rights
+        404:
+          description: Match not found
+        422:
+          description: The specified racetime race was not recorded or does not include all entrants
 
 components:
   schemas:
@@ -88,3 +184,86 @@ components:
       required:
         - id
         - name
+    Entrant:
+      type: object
+      properties:
+        user:
+          type: object
+          $ref: "#/components/schemas/User"
+        status:
+          type: string
+          enum:
+            - PRE_RACE
+            - FINISHED
+            - DID_NOT_FINISH
+        finishTime:
+          type: string
+          format: duration
+          description: Entrant's finish time as ISO 8601 duration
+        finishTimeSeconds:
+          type: integer
+          format: int32
+          description: Entrant's finish time in seconds
+        racetimePlace:
+          type: integer
+          format: int32
+      required:
+        - user
+        - status
+    Match:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        entrants:
+          type: array
+          items:
+            $ref: "#/components/schemas/Entrant"
+        round:
+          type: string
+        sceduledTime:
+          type: string
+          format: date-time
+        racetimeId:
+          type: string
+      required:
+        - id
+        - entrants
+    NewMatch:
+      type: object
+      properties:
+        entrantIds:
+          type: array
+          items:
+            type: string
+        round:
+          type: string
+      required:
+        - entrnatIds
+    UpdateMatch:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        entrantIds:
+          type: array
+          items:
+            type: string
+        round:
+          type: string
+        scheduledTime:
+          type: string
+          format: date-time
+        racetimeId:
+          type: string
+      required:
+        - id
+        - entrantIds
+    MatchState:
+      type: string
+      enum:
+        - NEW
+        - SCHEDULED
+        - FINISHED

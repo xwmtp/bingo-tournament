@@ -7,6 +7,7 @@ import com.github.xwmtp.api.model.NewMatch
 import com.github.xwmtp.api.model.UpdateMatch
 import com.github.xwmtp.bingotournament.role.ADMIN_ROLE
 import com.github.xwmtp.bingotournament.role.ENTRANT_ROLE
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.RestController
@@ -38,5 +39,6 @@ class MatchRestController(private val service: MatchService) : MatchesApi {
         is MatchService.UpdatedSuccessfully -> ResponseEntity.ok(result.updatedMatch)
         MatchService.MatchNotFound -> ResponseEntity.notFound().build()
         MatchService.RacetimeInconsistency -> ResponseEntity.unprocessableEntity().build()
+        MatchService.InsufficientRights -> ResponseEntity.status(HttpStatus.FORBIDDEN).build()
       }
 }

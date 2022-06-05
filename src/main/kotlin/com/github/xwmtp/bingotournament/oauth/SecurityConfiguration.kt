@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.Http403ForbiddenEntryPoin
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
 @Configuration
-class OauthConfiguration(
+class SecurityConfiguration(
 		private val frontendProperties: FrontendProperties,
 		private val racetimeOauthClient: RacetimeOauthClient,
 		private val racetimeUserService: RacetimeUserService,
@@ -32,6 +32,7 @@ class OauthConfiguration(
 		http.authorizeRequests()
 				.antMatchers("/api/health", "/login").permitAll()
 				.antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+				.antMatchers(HttpMethod.GET, "/api/matches").permitAll()
 				.anyRequest().authenticated()
 	}
 }

@@ -1,6 +1,11 @@
 package com.github.xwmtp.bingotournament.oauth.racetime
 
 import com.github.xwmtp.bingotournament.oauth.OauthProperties
+import com.github.xwmtp.bingotournament.role.DbRole
+import com.github.xwmtp.bingotournament.user.DbUser
+import com.github.xwmtp.bingotournament.user.TournamentOauthUser
+import com.github.xwmtp.bingotournament.user.UserProperties
+import com.github.xwmtp.bingotournament.user.UserRepository
 import org.springframework.http.HttpEntity
 import org.springframework.http.HttpHeaders
 import org.springframework.http.HttpMethod
@@ -15,6 +20,8 @@ import org.springframework.web.client.exchange
 class RacetimeUserService(
     private val restOperations: RestOperations,
     private val properties: OauthProperties,
+    private val repository: UserRepository,
+    private val userProperties: UserProperties,
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
   override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User? {
@@ -30,5 +37,18 @@ class RacetimeUserService(
         .exchange<RacetimeUser>(userInfoUri, HttpMethod.GET, headers)
         .body
         ?.asOauthUser(properties.racetime.baseUrl)
+        ?.apply { addRoles(getOrCreateDbUser(this).roleStrings) }
+  }
+
+  private fun getOrCreateDbUser(oauthUser: TournamentOauthUser): DbUser =
+      repository.findById(oauthUser.id) ?: repository.save(oauthUser.newDbUser().checkForAdmin())
+
+  private fun DbUser.checkForAdmin(): DbUser {
+
+    if (id in userProperties.admins) {
+      roles = roles + DbRole.ADMIN
+    }
+
+    return this
   }
 }

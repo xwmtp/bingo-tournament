@@ -3,12 +3,12 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
 
-  kotlin("jvm") version "1.6.10"
+  kotlin("jvm") version "1.6.21"
 
-  id("org.springframework.boot") version "2.6.2"
+  id("org.springframework.boot") version "2.7.0"
   id("io.spring.dependency-management") version "1.0.11.RELEASE"
-  kotlin("plugin.spring") version "1.6.10"
-  kotlin("plugin.jpa") version "1.6.10"
+  kotlin("plugin.spring") version "1.6.21"
+  kotlin("plugin.jpa") version "1.6.21"
 
   id("org.openapi.generator") version "5.4.0"
 }

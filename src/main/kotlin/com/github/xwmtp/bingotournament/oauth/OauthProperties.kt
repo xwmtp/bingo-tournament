@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties("bingo.oauth")
 data class OauthProperties(
-    @NestedConfigurationProperty
-    var racetime: RacetimeOauthProperties = RacetimeOauthProperties(),
+		@NestedConfigurationProperty
+		var racetime: RacetimeOauthProperties = RacetimeOauthProperties(),
 ) {
 
-  @ConfigurationProperties
-  data class RacetimeOauthProperties(
-      var baseUrl: String = "",
-  )
+	@ConfigurationProperties
+	data class RacetimeOauthProperties(
+			var baseUrl: String = "",
+	)
 }

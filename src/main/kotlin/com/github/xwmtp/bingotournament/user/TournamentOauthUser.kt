@@ -7,25 +7,25 @@ import java.io.Serializable
 import java.net.URI
 
 class TournamentOauthUser(
-    val id: String,
-    private val username: String,
-    private val avatarUrl: URI?,
-    private val twitchChannel: URI?,
+		val id: String,
+		private val username: String,
+		private val avatarUrl: URI?,
+		private val twitchChannel: URI?,
 ) : OAuth2User, Serializable {
 
-  private val authorities: MutableList<GrantedAuthority> = mutableListOf()
+	private val authorities: MutableList<GrantedAuthority> = mutableListOf()
 
-  override fun getName(): String = username
+	override fun getName(): String = username
 
-  override fun getAttributes(): MutableMap<String, Any> = mutableMapOf()
+	override fun getAttributes(): MutableMap<String, Any> = mutableMapOf()
 
-  override fun getAuthorities(): MutableCollection<GrantedAuthority> = authorities
+	override fun getAuthorities(): MutableCollection<GrantedAuthority> = authorities
 
-  fun addRoles(roles: Collection<String>) {
-    roles.map { SimpleGrantedAuthority(it) }.forEach { authorities.add(it) }
-  }
+	fun addRoles(roles: Collection<String>) {
+		roles.map { SimpleGrantedAuthority(it) }.forEach { authorities.add(it) }
+	}
 
-  fun newDbUser() = DbUser(
-      id, username, avatarUrl.toString(), twitchChannel.toString(),
-  )
+	fun newDbUser() = DbUser(
+			id, username, avatarUrl.toString(), twitchChannel.toString(),
+	)
 }

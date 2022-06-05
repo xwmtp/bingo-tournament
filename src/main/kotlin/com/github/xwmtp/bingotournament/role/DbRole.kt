@@ -8,5 +8,5 @@ const val ENTRANT_ROLE = "ENTRANT"
 @Embeddable
 enum class DbRole(val role: String) {
 
-  ADMIN(ADMIN_ROLE), ENTRANT(ENTRANT_ROLE)
+	ADMIN(ADMIN_ROLE), ENTRANT(ENTRANT_ROLE)
 }

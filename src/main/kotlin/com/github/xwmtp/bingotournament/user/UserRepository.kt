@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component
 @Component
 interface UserRepository : Repository<DbUser, String> {
 
-  fun save(user: DbUser): DbUser
-  fun findById(id: String): DbUser?
-  fun findAll(): Collection<DbUser>
+	fun save(user: DbUser): DbUser
+	fun findById(id: String): DbUser?
+	fun findAll(): Collection<DbUser>
 }

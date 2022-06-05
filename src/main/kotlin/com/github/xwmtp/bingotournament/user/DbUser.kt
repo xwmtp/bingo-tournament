@@ -10,27 +10,27 @@ import javax.persistence.Id
 
 @Entity
 class DbUser(
-    @Id
-    var id: String = "",
-    var username: String = "",
-    var avatarUrl: String? = null,
-    var twitchChannel: String? = null,
-    @ElementCollection(fetch = FetchType.EAGER)
-    internal var roleStrings: Set<String> = mutableSetOf(),
+		@Id
+		var id: String = "",
+		var username: String = "",
+		var avatarUrl: String? = null,
+		var twitchChannel: String? = null,
+		@ElementCollection(fetch = FetchType.EAGER)
+		internal var roleStrings: Set<String> = mutableSetOf(),
 ) {
 
-  var roles: Set<DbRole>
-    get() = roleStrings.map { DbRole.valueOf(it) }.toSet()
-    set(newRoles) {
-      roleStrings = newRoles.map { it.name }.toSet()
-    }
+	var roles: Set<DbRole>
+		get() = roleStrings.map { DbRole.valueOf(it) }.toSet()
+		set(newRoles) {
+			roleStrings = newRoles.map { it.name }.toSet()
+		}
 
-  fun inApiFormat(): User = User(
-      id,
-      username,
-      avatarUrl?.let { URI.create(it) },
-      twitchChannel?.let { URI.create(it) },
-  )
+	fun inApiFormat(): User = User(
+			id,
+			username,
+			avatarUrl?.let { URI.create(it) },
+			twitchChannel?.let { URI.create(it) },
+	)
 
-  override fun toString() = "$username $roles"
+	override fun toString() = "$username $roles"
 }

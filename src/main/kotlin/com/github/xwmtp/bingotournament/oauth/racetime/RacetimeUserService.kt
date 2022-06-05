@@ -18,37 +18,37 @@ import org.springframework.web.client.exchange
 
 @Component
 class RacetimeUserService(
-    private val restOperations: RestOperations,
-    private val properties: OauthProperties,
-    private val repository: UserRepository,
-    private val userProperties: UserProperties,
+		private val restOperations: RestOperations,
+		private val properties: OauthProperties,
+		private val repository: UserRepository,
+		private val userProperties: UserProperties,
 ) : OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
-  override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User? {
+	override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User? {
 
-    val userInfoUri = userRequest.clientRegistration.providerDetails.userInfoEndpoint.uri
+		val userInfoUri = userRequest.clientRegistration.providerDetails.userInfoEndpoint.uri
 
-    val headers = HttpHeaders().apply {
-      set(HttpHeaders.AUTHORIZATION, "Bearer ${userRequest.accessToken.tokenValue}")
-      set(HttpHeaders.USER_AGENT, "oot-bingo-tournament")
-    }.let { HttpEntity<Map<String, String>>(it) }
+		val headers = HttpHeaders().apply {
+			set(HttpHeaders.AUTHORIZATION, "Bearer ${userRequest.accessToken.tokenValue}")
+			set(HttpHeaders.USER_AGENT, "oot-bingo-tournament")
+		}.let { HttpEntity<Map<String, String>>(it) }
 
-    return restOperations
-        .exchange<RacetimeUser>(userInfoUri, HttpMethod.GET, headers)
-        .body
-        ?.asOauthUser(properties.racetime.baseUrl)
-        ?.apply { addRoles(getOrCreateDbUser(this).roleStrings) }
-  }
+		return restOperations
+				.exchange<RacetimeUser>(userInfoUri, HttpMethod.GET, headers)
+				.body
+				?.asOauthUser(properties.racetime.baseUrl)
+				?.apply { addRoles(getOrCreateDbUser(this).roleStrings) }
+	}
 
-  private fun getOrCreateDbUser(oauthUser: TournamentOauthUser): DbUser =
-      repository.findById(oauthUser.id) ?: repository.save(oauthUser.newDbUser().checkForAdmin())
+	private fun getOrCreateDbUser(oauthUser: TournamentOauthUser): DbUser =
+			repository.findById(oauthUser.id) ?: repository.save(oauthUser.newDbUser().checkForAdmin())
 
-  private fun DbUser.checkForAdmin(): DbUser {
+	private fun DbUser.checkForAdmin(): DbUser {
 
-    if (id in userProperties.admins) {
-      roles = roles + DbRole.ADMIN
-    }
+		if (id in userProperties.admins) {
+			roles = roles + DbRole.ADMIN
+		}
 
-    return this
-  }
+		return this
+	}
 }

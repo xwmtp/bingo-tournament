@@ -11,20 +11,20 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class EntrantsRestController(
-    private val userService: UserService,
-    private val repository: UserRepository,
+		private val userService: UserService,
+		private val repository: UserRepository,
 ) : EntrantsApi {
 
-  override fun getEntrants(): ResponseEntity<List<User>> {
+	override fun getEntrants(): ResponseEntity<List<User>> {
 
-    (userService.getCurrentUser() ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build())
-        .roles.takeIf { it.contains(DbRole.ADMIN) }
-        ?: return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+		(userService.getCurrentUser() ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build())
+				.roles.takeIf { it.contains(DbRole.ADMIN) }
+				?: return ResponseEntity.status(HttpStatus.FORBIDDEN).build()
 
-    return ResponseEntity.ok(
-        repository.findAll()
-            .filter { DbRole.ENTRANT in it.roles }
-            .map { it.inApiFormat() }
-    )
-  }
+		return ResponseEntity.ok(
+				repository.findAll()
+						.filter { DbRole.ENTRANT in it.roles }
+						.map { it.inApiFormat() }
+		)
+	}
 }

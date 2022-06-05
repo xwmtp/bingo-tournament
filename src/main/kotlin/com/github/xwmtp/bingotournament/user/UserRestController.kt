@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 class UserRestController(private val userService: UserService) : UserApi {
 
-  override fun getUser(): ResponseEntity<User> =
-      userService.getCurrentUser()
-          ?.let { ResponseEntity.ok(it.inApiFormat()) }
-          ?: ResponseEntity.notFound().build()
+	override fun getUser(): ResponseEntity<User> =
+			userService.getCurrentUser()
+					?.let { ResponseEntity.ok(it.inApiFormat()) }
+					?: ResponseEntity.notFound().build()
 }

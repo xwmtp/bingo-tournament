@@ -11,35 +11,35 @@ import org.springframework.stereotype.Component
 
 @Component
 class SignupRestController(
-    private val userService: UserService,
-    private val repository: UserRepository,
+		private val userService: UserService,
+		private val repository: UserRepository,
 ) : SignupApi {
 
-  private val logger = LoggerFactory.getLogger(SignupRestController::class.java)
+	private val logger = LoggerFactory.getLogger(SignupRestController::class.java)
 
-  override fun signUp(): ResponseEntity<Unit> {
+	override fun signUp(): ResponseEntity<Unit> {
 
-    val user = userService.getCurrentUser() ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
-    logger.debug("Signup called for user: ${user.id}")
+		val user = userService.getCurrentUser() ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+		logger.debug("Signup called for user: ${user.id}")
 
-    if (DbRole.ENTRANT !in user.roles) {
-      user.roles += DbRole.ENTRANT
-      repository.save(user)
-    }
+		if (DbRole.ENTRANT !in user.roles) {
+			user.roles += DbRole.ENTRANT
+			repository.save(user)
+		}
 
-    return ResponseEntity.noContent().build()
-  }
+		return ResponseEntity.noContent().build()
+	}
 
-  override fun withdraw(): ResponseEntity<Unit> {
+	override fun withdraw(): ResponseEntity<Unit> {
 
-    val user = userService.getCurrentUser() ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
-    logger.debug("Withdraw called for user: ${user.id}")
+		val user = userService.getCurrentUser() ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
+		logger.debug("Withdraw called for user: ${user.id}")
 
-    if (DbRole.ENTRANT in user.roles) {
-      user.roles -= DbRole.ENTRANT
-      repository.save(user)
-    }
+		if (DbRole.ENTRANT in user.roles) {
+			user.roles -= DbRole.ENTRANT
+			repository.save(user)
+		}
 
-    return ResponseEntity.noContent().build()
-  }
+		return ResponseEntity.noContent().build()
+	}
 }

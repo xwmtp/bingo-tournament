@@ -6,5 +6,5 @@ import org.springframework.stereotype.Component
 @Component
 @ConfigurationProperties("bingo.frontend")
 class FrontendProperties(
-    var baseUrl: String = "",
+		var baseUrl: String = "",
 )

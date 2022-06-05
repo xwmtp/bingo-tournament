@@ -7,6 +7,6 @@ import org.springframework.web.client.RestTemplate
 @Configuration
 class GlobalConfiguration {
 
-  @Bean
-  fun restTemplate() = RestTemplate()
+	@Bean
+	fun restTemplate() = RestTemplate()
 }

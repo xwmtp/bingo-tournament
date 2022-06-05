@@ -12,26 +12,26 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
 @Configuration
 class OauthConfiguration(
-    private val frontendProperties: FrontendProperties,
-    private val racetimeOauthClient: RacetimeOauthClient,
-    private val racetimeUserService: RacetimeUserService,
+		private val frontendProperties: FrontendProperties,
+		private val racetimeOauthClient: RacetimeOauthClient,
+		private val racetimeUserService: RacetimeUserService,
 ) : WebSecurityConfigurerAdapter() {
 
-  override fun configure(http: HttpSecurity) {
+	override fun configure(http: HttpSecurity) {
 
-    http.exceptionHandling().authenticationEntryPoint(Http403ForbiddenEntryPoint())
+		http.exceptionHandling().authenticationEntryPoint(Http403ForbiddenEntryPoint())
 
-    http.oauth2Login()
-        .authorizationEndpoint().baseUri("/login")
-        .and().tokenEndpoint().accessTokenResponseClient(racetimeOauthClient)
-        .and().userInfoEndpoint().userService(racetimeUserService)
-        .and().defaultSuccessUrl(frontendProperties.baseUrl, true)
+		http.oauth2Login()
+				.authorizationEndpoint().baseUri("/login")
+				.and().tokenEndpoint().accessTokenResponseClient(racetimeOauthClient)
+				.and().userInfoEndpoint().userService(racetimeUserService)
+				.and().defaultSuccessUrl(frontendProperties.baseUrl, true)
 
-    http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
 
-    http.authorizeRequests()
-        .antMatchers("/api/health", "/login").permitAll()
-        .antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
-        .anyRequest().authenticated()
-  }
+		http.authorizeRequests()
+				.antMatchers("/api/health", "/login").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+				.anyRequest().authenticated()
+	}
 }

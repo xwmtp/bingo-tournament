@@ -7,10 +7,10 @@ import java.util.*
 @Component
 interface MatchRepository : Repository<DbMatch, UUID> {
 
-  fun findAll(): Collection<DbMatch>
-  fun findById(id: UUID): DbMatch?
+	fun findAll(): Collection<DbMatch>
+	fun findById(id: UUID): DbMatch?
 
-  fun save(match: DbMatch): DbMatch
+	fun save(match: DbMatch): DbMatch
 
-  fun delete(match: DbMatch)
+	fun delete(match: DbMatch)
 }

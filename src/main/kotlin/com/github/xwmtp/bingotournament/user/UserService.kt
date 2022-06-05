@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service
 
 @Service
 class UserService(
-    private val repository: UserRepository,
+		private val repository: UserRepository,
 ) {
 
-  fun getCurrentUser(): DbUser? =
-      when (val principal = SecurityContextHolder.getContext().authentication.principal) {
-        is TournamentOauthUser -> repository.findById(principal.id)
-        else -> null
-      }
+	fun getCurrentUser(): DbUser? =
+			when (val principal = SecurityContextHolder.getContext().authentication.principal) {
+				is TournamentOauthUser -> repository.findById(principal.id)
+				else -> null
+			}
 }

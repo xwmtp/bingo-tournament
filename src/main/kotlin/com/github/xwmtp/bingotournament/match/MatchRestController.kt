@@ -17,28 +17,28 @@ import java.util.*
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class MatchRestController(private val service: MatchService) : MatchesApi {
 
-  @Secured(ADMIN_ROLE)
-  override fun addMatches(matches: List<NewMatch>): ResponseEntity<List<Match>> =
-      matches.mapNotNull { service.addNewMatch(it) }
-          .takeUnless { it.isEmpty() }
-          ?.let { ResponseEntity.ok(it) }
-          ?: ResponseEntity.internalServerError().build()
+	@Secured(ADMIN_ROLE)
+	override fun addMatches(matches: List<NewMatch>): ResponseEntity<List<Match>> =
+			matches.mapNotNull { service.addNewMatch(it) }
+					.takeUnless { it.isEmpty() }
+					?.let { ResponseEntity.ok(it) }
+					?: ResponseEntity.internalServerError().build()
 
-  @Secured(ADMIN_ROLE)
-  override fun deleteMatches(matchIds: List<UUID>): ResponseEntity<Unit> =
-      service.deleteAllMatches(matchIds).takeIf { it }
-          ?.let { ResponseEntity.noContent().build() }
-          ?: ResponseEntity.notFound().build()
+	@Secured(ADMIN_ROLE)
+	override fun deleteMatches(matchIds: List<UUID>): ResponseEntity<Unit> =
+			service.deleteAllMatches(matchIds).takeIf { it }
+					?.let { ResponseEntity.noContent().build() }
+					?: ResponseEntity.notFound().build()
 
-  override fun getAllMatches(filter: MatchState?, onlyLoggedIn: Boolean): ResponseEntity<List<Match>> =
-      ResponseEntity.ok(service.getAllMatches(filter, onlyLoggedIn))
+	override fun getAllMatches(filter: MatchState?, onlyLoggedIn: Boolean): ResponseEntity<List<Match>> =
+			ResponseEntity.ok(service.getAllMatches(filter, onlyLoggedIn))
 
-  @Secured(ADMIN_ROLE, ENTRANT_ROLE)
-  override fun updateMatch(match: UpdateMatch): ResponseEntity<Match> =
-      when (val result = service.updateMatch(match)) {
-        is MatchService.UpdatedSuccessfully -> ResponseEntity.ok(result.updatedMatch)
-        MatchService.MatchNotFound -> ResponseEntity.notFound().build()
-        MatchService.RacetimeInconsistency -> ResponseEntity.unprocessableEntity().build()
-        MatchService.InsufficientRights -> ResponseEntity.status(HttpStatus.FORBIDDEN).build()
-      }
+	@Secured(ADMIN_ROLE, ENTRANT_ROLE)
+	override fun updateMatch(match: UpdateMatch): ResponseEntity<Match> =
+			when (val result = service.updateMatch(match)) {
+				is MatchService.UpdatedSuccessfully -> ResponseEntity.ok(result.updatedMatch)
+				MatchService.MatchNotFound -> ResponseEntity.notFound().build()
+				MatchService.RacetimeInconsistency -> ResponseEntity.unprocessableEntity().build()
+				MatchService.InsufficientRights -> ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+			}
 }

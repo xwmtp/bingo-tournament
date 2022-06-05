@@ -9,5 +9,5 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 class BingoTournamentApplication
 
 fun main(args: Array<String>) {
-  runApplication<BingoTournamentApplication>(*args)
+	runApplication<BingoTournamentApplication>(*args)
 }

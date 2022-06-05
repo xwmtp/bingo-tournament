@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.6
+  version: 0.0.7
 
 servers:
   - url: http://localhost:8080/api
@@ -103,6 +103,7 @@ paths:
       description: Allows admisitrators to add mutliple matches to the ongoing tournament.
       operationId: addMatches
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -127,6 +128,7 @@ paths:
       description: Allows administrators to delete multiple matches from the tournament
       operationId: deleteMatches
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -141,11 +143,12 @@ paths:
           description: Insufficient rights
         404:
           description: At least one match was not found
-    put:
+    patch:
       summary: Update a match
       description: Allows administrators to update the information of a single match
       operationId: updateMatch
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -190,12 +193,9 @@ components:
         user:
           type: object
           $ref: "#/components/schemas/User"
-        status:
+        state:
           type: string
-          enum:
-            - PRE_RACE
-            - FINISHED
-            - DID_NOT_FINISH
+          $ref: "#/components/schemas/EntrantState"
         finishTime:
           type: string
           format: duration
@@ -209,7 +209,7 @@ components:
           format: int32
       required:
         - user
-        - status
+        - state
     Match:
       type: object
       properties:
@@ -225,7 +225,7 @@ components:
           $ref: "#/components/schemas/MatchState"
         round:
           type: string
-        sceduledTime:
+        scheduledTime:
           type: string
           format: date-time
         racetimeId:
@@ -247,19 +247,14 @@ components:
         round:
           type: string
       required:
-        - entrnatIds
+        - entrantIds
+        - round
     UpdateMatch:
       type: object
       properties:
         id:
           type: string
           format: uuid
-        entrantIds:
-          type: array
-          items:
-            type: string
-        round:
-          type: string
         scheduledTime:
           type: string
           format: date-time
@@ -267,7 +262,12 @@ components:
           type: string
       required:
         - id
-        - entrantIds
+    EntrantState:
+      type: string
+      enum:
+        - PRE_RACE
+        - FINISHED
+        - DID_NOT_FINISH
     MatchState:
       type: string
       enum:

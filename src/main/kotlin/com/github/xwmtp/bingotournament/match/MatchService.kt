@@ -7,6 +7,8 @@ import com.github.xwmtp.api.model.UpdateMatch
 import com.github.xwmtp.bingotournament.role.DbRole
 import com.github.xwmtp.bingotournament.user.UserRepository
 import com.github.xwmtp.bingotournament.user.UserService
+import com.github.xwmtp.bingotournament.util.applyIf
+import com.github.xwmtp.bingotournament.util.filterIf
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import java.util.*
@@ -80,8 +82,3 @@ class MatchService(
   object RacetimeInconsistency : MatchUpdateResult()
   object InsufficientRights : MatchUpdateResult()
 }
-
-inline fun <T> T.applyIf(condition: Boolean, block: T.() -> Unit): T = if (condition) this.apply(block) else this
-
-inline fun <T> Iterable<T>.filterIf(condition: Boolean, predicate: (T) -> Boolean): Iterable<T> =
-    if (condition) filter(predicate) else this

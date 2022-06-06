@@ -58,10 +58,10 @@ class MatchService(
 					?.let { true }
 					?: false
 
-	fun updateMatch(match: UpdateMatch): MatchUpdateResult {
+	fun updateMatch(matchId: UUID, match: UpdateMatch): MatchUpdateResult {
 
 		val currentUser = userService.getCurrentUser() ?: return InsufficientRights
-		val savedMatch = repository.findById(match.id) ?: return MatchNotFound
+		val savedMatch = repository.findById(matchId) ?: return MatchNotFound
 
 		if (DbRole.ADMIN !in currentUser.roles && currentUser.id !in savedMatch.entrants.map { it.id.user.id }) {
 			return InsufficientRights

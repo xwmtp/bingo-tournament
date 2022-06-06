@@ -28,6 +28,7 @@ class DbUser(
 	fun inApiFormat(): User = User(
 			id,
 			username,
+			roles.map { it.toApiFormat() },
 			avatarUrl?.let { URI.create(it) },
 			twitchChannel?.let { URI.create(it) },
 	)

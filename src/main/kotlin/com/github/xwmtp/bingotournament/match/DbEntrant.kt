@@ -18,7 +18,7 @@ class DbEntrant(
 	fun inApiFormat() = Entrant(
 			user = id.user.inApiFormat(),
 			state = state,
-			finishTime = finishTime.toString(),
+			finishTime = finishTime?.toString(),
 			racetimePlace = racetimePlace,
 	)
 

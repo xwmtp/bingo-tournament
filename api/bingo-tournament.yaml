@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.7
+  version: 0.0.8
 
 servers:
   - url: http://localhost:8080/api
@@ -72,7 +72,7 @@ paths:
   /matches:
     get:
       summary: Load match data
-      description: Returns a list of all matches of the tournament. It is possible to filter the list by state and/or the currecnt user.
+      description: Returns a list of all matches of the tournament. It is possible to filter the list by state and/or the current user.
       operationId: getAllMatches
       parameters:
         - name: filter
@@ -178,6 +178,10 @@ components:
           type: string
         name:
           type: string
+        roles:
+          type: array
+          items:
+            $ref: "#/components/schemas/Role"
         avatar:
           type: string
           format: uri
@@ -187,6 +191,11 @@ components:
       required:
         - id
         - name
+    Role:
+      type: string
+      enum:
+        - ADMIN
+        - ENTRANT
     Entrant:
       type: object
       properties:

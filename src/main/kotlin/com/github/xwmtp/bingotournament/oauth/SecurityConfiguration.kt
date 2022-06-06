@@ -29,7 +29,7 @@ class SecurityConfiguration(
 				.and().userInfoEndpoint().userService(racetimeUserService)
 				.and().defaultSuccessUrl(frontendProperties.baseUrl, true)
 
-		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 
 		http.authorizeRequests()
 				.antMatchers("/api/health", "/login").permitAll()

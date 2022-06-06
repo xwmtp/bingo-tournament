@@ -28,12 +28,9 @@ spring:
       client:
         provider:
           racetime:
-            authorizationUri: "http://localhost:8000/o/authorize"
-            tokenUri: "http://localhost:8000/o/token"
-            userInfoUri: "http://localhost:8000/o/userinfo"
-        #            authorizationUri: "{bingo.oauth.racetime.base-url}/o/authorize"
-        #            tokenUri: "{bingo.oauth.racetime.base-url}/o/token"
-        #            userInfoUri: "{bingo.oauth.racetime.base-url}/o/userinfo"
+            authorizationUri: "${bingo.oauth.racetime.base-url}/o/authorize"
+            tokenUri: "${bingo.oauth.racetime.base-url}/o/token"
+            userInfoUri: "${bingo.oauth.racetime.base-url}/o/userinfo"
         registration:
           racetime:
             clientAuthenticationMethod: post

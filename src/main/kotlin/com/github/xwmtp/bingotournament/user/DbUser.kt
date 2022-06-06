@@ -16,13 +16,13 @@ class DbUser(
 		var avatarUrl: String? = null,
 		var twitchChannel: String? = null,
 		@ElementCollection(fetch = FetchType.EAGER)
-		internal var roleStrings: Set<String> = mutableSetOf(),
+		internal var roleStrings: MutableSet<String> = mutableSetOf(),
 ) {
 
 	var roles: Set<DbRole>
 		get() = roleStrings.map { DbRole.valueOf(it) }.toSet()
 		set(newRoles) {
-			roleStrings = newRoles.map { it.name }.toSet()
+			roleStrings = newRoles.map { it.name }.toMutableSet()
 		}
 
 	fun inApiFormat(): User = User(

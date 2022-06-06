@@ -37,6 +37,14 @@ spring:
             client-secret: <your client secret>
 ```
 
+### Local Database
+
+In the root directory of this repository, run
+
+```shell
+docker-compose up -d
+```
+
 ### Run Configuration
 
 Run your application with the argument `--spring.profiles.active=local`.
@@ -48,5 +56,5 @@ can log in and allow access for the application.
 
 ## CSRF Protection
 
-The endpoints are protected against CSRF. Therefore all `POST`, `PUT`, and `PATCH` requests must send the contents of
+The endpoints are protected against CSRF. Therefore, all `POST`, `PUT`, and `PATCH` requests must send the contents of
 the `XSRF-TOKEN` cookie as a header called `X-XSRF-TOKEN`.

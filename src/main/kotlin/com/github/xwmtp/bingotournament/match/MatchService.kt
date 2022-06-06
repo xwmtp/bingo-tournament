@@ -11,6 +11,7 @@ import com.github.xwmtp.bingotournament.util.applyIf
 import com.github.xwmtp.bingotournament.util.filterIf
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -22,7 +23,13 @@ class MatchService(
 
 	private val logger = LoggerFactory.getLogger(MatchService::class.java)
 
+	@Transactional(rollbackFor = [Exception::class])
 	fun addNewMatch(newMatch: NewMatch): Match? {
+
+		if (newMatch.entrantIds.size < 2) {
+			logger.error("Cannot create race with less than two entrants")
+			return null
+		}
 
 		val match = DbMatch(
 				round = newMatch.round,

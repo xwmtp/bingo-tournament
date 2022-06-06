@@ -29,6 +29,6 @@ class DbMatch(
 			round = round,
 			scheduledTime = scheduledTime?.atOffset(ZoneOffset.UTC),
 			racetimeId = racetimeId,
-			restreamChannel = URI.create(restreamChannel),
+			restreamChannel = restreamChannel?.let { URI.create(it) },
 	)
 }

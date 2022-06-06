@@ -26,6 +26,6 @@ class TournamentOauthUser(
 	}
 
 	fun newDbUser() = DbUser(
-			id, username, avatarUrl.toString(), twitchChannel.toString(),
+			id, username, avatarUrl?.toString(), twitchChannel?.toString(),
 	)
 }

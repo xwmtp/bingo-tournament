@@ -37,7 +37,7 @@ class RacetimeUserService(
 				.exchange<RacetimeUser>(userInfoUri, HttpMethod.GET, headers)
 				.body
 				?.asOauthUser(properties.racetime.baseUrl)
-				?.apply { addRoles(getOrCreateDbUser(this).roleStrings) }
+				?.apply { addRoles(getOrCreateDbUser(this).roles) }
 	}
 
 	private fun getOrCreateDbUser(oauthUser: TournamentOauthUser): DbUser =

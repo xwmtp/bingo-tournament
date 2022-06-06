@@ -1,5 +1,6 @@
 package com.github.xwmtp.bingotournament.user
 
+import com.github.xwmtp.bingotournament.role.DbRole
 import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.core.user.OAuth2User
@@ -21,8 +22,8 @@ class TournamentOauthUser(
 
 	override fun getAuthorities(): MutableCollection<GrantedAuthority> = authorities
 
-	fun addRoles(roles: Collection<String>) {
-		roles.map { SimpleGrantedAuthority(it) }.forEach { authorities.add(it) }
+	fun addRoles(roles: Collection<DbRole>) {
+		roles.map { SimpleGrantedAuthority(it.role) }.forEach { authorities.add(it) }
 	}
 
 	fun newDbUser() = DbUser(

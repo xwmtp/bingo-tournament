@@ -17,7 +17,7 @@ import java.util.*
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
 class MatchRestController(private val service: MatchService) : MatchesApi {
 
-	//	TODO @Secured(ADMIN_ROLE)
+	@Secured(ADMIN_ROLE)
 	override fun addMatches(matches: List<NewMatch>): ResponseEntity<List<Match>> =
 			matches.mapNotNull { service.addNewMatch(it) }
 					.takeUnless { it.isEmpty() }

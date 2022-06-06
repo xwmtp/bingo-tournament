@@ -45,6 +45,22 @@ In the root directory of this repository, run
 docker-compose up -d
 ```
 
+:warning: **Docker volumes on Windows** :warning:
+
+When working on the Windows file system the Docker volume can't be created with the correct permissions, even when
+running Docker in WSL2. To mitigate this issue a named volume has to be used. Create a file called
+`docker-compose.override.yaml` with the following content:
+
+```yaml
+services:
+  db:
+    volumes:
+      - "dev_db:/var/lib/postgresql/data"
+
+volumes:
+  dev_db:
+```
+
 ### Run Configuration
 
 Run your application with the argument `--spring.profiles.active=local`.

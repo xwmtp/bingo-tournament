@@ -147,6 +147,13 @@ paths:
       summary: Update a match
       description: Allows administrators to update the information of a single match
       operationId: updateMatch
+      parameters:
+        - name: matchId
+          required: true
+          in: query
+          schema:
+            type: string
+            format: uuid
       requestBody:
         required: true
         content:
@@ -191,6 +198,7 @@ components:
       required:
         - id
         - name
+        - roles
     Role:
       type: string
       enum:
@@ -261,16 +269,11 @@ components:
     UpdateMatch:
       type: object
       properties:
-        id:
-          type: string
-          format: uuid
         scheduledTime:
           type: string
           format: date-time
         racetimeId:
           type: string
-      required:
-        - id
     EntrantState:
       type: string
       enum:

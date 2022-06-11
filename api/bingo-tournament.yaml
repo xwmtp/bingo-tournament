@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.9
+  version: 0.0.10
 
 servers:
   - url: http://localhost:8080/api
@@ -145,7 +145,16 @@ paths:
           description: At least one match was not found
     patch:
       summary: Update a match
-      description: Allows administrators to update the information of a single match
+      description: >
+        Allows administrators and entrants to update the information of a single match.Entrants may only update their
+        own matches.
+
+        The time of the race must be in the future.
+
+        Once a Racetime ID is saved the time cannot be adjusted. The Racetime ID can only be changed by
+        administrators once set.
+
+        Only one field in the body may be set in each request.
       operationId: updateMatch
       parameters:
         - name: matchId
@@ -169,12 +178,18 @@ paths:
               schema:
                 type: object
                 $ref: "#/components/schemas/Match"
+        400:
+          description: Body doesn't match specification, no field is set, or multiple fields are set
         403:
           description: Insufficient rights
         404:
           description: Match not found
         422:
-          description: The specified racetime race was not recorded or does not include all entrants
+          description: >
+            The specified racetime race was not recorded or does not include all entrants, or a time is being set after
+            the race has been recorded.
+        502:
+          description: An error occurred while communicating with the Racetime server
 
 components:
   schemas:
@@ -268,12 +283,15 @@ components:
         - round
     UpdateMatch:
       type: object
+      description: A partial object with race information used to update an already existing race.
       properties:
         scheduledTime:
           type: string
           format: date-time
         racetimeId:
           type: string
+          pattern: '[a-zA-Z0-9-_]+/[a-zA-Z0-9-_]+'
+          description: Game abbreviation and slug of the race, e.g. "oot/superb-ingo-1234"
     EntrantState:
       type: string
       enum:

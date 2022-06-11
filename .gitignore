@@ -4,6 +4,7 @@ data.trace.db
 src/main/resources/application-local.yaml
 dev_db/
 docker-compose.override.yaml
+docker.sh
 
 ### Gradle ###
 .gradle

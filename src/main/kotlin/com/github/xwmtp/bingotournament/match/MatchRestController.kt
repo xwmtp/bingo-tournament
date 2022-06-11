@@ -37,7 +37,9 @@ class MatchRestController(private val service: MatchService) : MatchesApi {
 			when (val result = service.updateMatch(matchId, match)) {
 				is MatchService.UpdatedSuccessfully -> ResponseEntity.ok(result.updatedMatch)
 				MatchService.MatchNotFound -> ResponseEntity.notFound().build()
+				MatchService.MatchInconsistency -> ResponseEntity.badRequest().build()
 				MatchService.RacetimeInconsistency -> ResponseEntity.unprocessableEntity().build()
+				MatchService.ProxyError -> ResponseEntity.status(HttpStatus.BAD_GATEWAY).build()
 				MatchService.InsufficientRights -> ResponseEntity.status(HttpStatus.FORBIDDEN).build()
 			}
 }

@@ -9,9 +9,11 @@ import com.github.xwmtp.bingotournament.user.UserRepository
 import com.github.xwmtp.bingotournament.user.UserService
 import com.github.xwmtp.bingotournament.util.applyIf
 import com.github.xwmtp.bingotournament.util.filterIf
+import com.github.xwmtp.bingotournament.util.takeIfExactlyOnePropertySet
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.time.OffsetDateTime
 import java.util.*
 
 @Service
@@ -19,6 +21,7 @@ class MatchService(
 		private val repository: MatchRepository,
 		private val userRepository: UserRepository,
 		private val userService: UserService,
+		private val racetimeRecorder: RacetimeRecorder,
 ) {
 
 	private val logger = LoggerFactory.getLogger(MatchService::class.java)
@@ -63,19 +66,38 @@ class MatchService(
 		val currentUser = userService.getCurrentUser() ?: return InsufficientRights
 		val savedMatch = repository.findById(matchId) ?: return MatchNotFound
 
+		match.takeIfExactlyOnePropertySet() ?: return MatchInconsistency
+
 		if (DbRole.ADMIN !in currentUser.roles && currentUser.id !in savedMatch.entrants.map { it.id.user.id }) {
 			return InsufficientRights
 		}
 
-		if (match.racetimeId != null) {
-			TODO("Racetime handling missing")
-		}
-
 		return savedMatch
-				.applyIf(match.scheduledTime != null) { scheduledTime = match.scheduledTime!!.toInstant() }
+				.applyIf(match.containsValidScheduledTime()) {
+					if (savedMatch.racetimeId == null) {
+						return RacetimeInconsistency
+					}
+					scheduledTime = match.scheduledTime!!.toInstant()
+				}
+				.applyIf(match.racetimeId != null) {
+					if (savedMatch.racetimeId != null && DbRole.ADMIN !in currentUser.roles) {
+						return InsufficientRights
+					}
+					try {
+						racetimeRecorder.recordRace(match.racetimeId!!)
+					} catch (e: RacetimeRecorder.RecordingException) {
+						return when (e) {
+							RacetimeRecorder.RacetimeHttpErrorException -> ProxyError
+							RacetimeRecorder.RacetimeInconsistencyException -> RacetimeInconsistency
+						}
+					}
+				}
 				.let { repository.save(it) }
 				.let { UpdatedSuccessfully(it.inApiFormat()) }
 	}
+
+	private fun UpdateMatch.containsValidScheduledTime() =
+			scheduledTime != null && scheduledTime.isAfter(OffsetDateTime.now())
 
 	fun getAllMatches(filter: MatchState?, onlyLoggedIn: Boolean): List<Match> =
 			repository.findAll()
@@ -86,6 +108,8 @@ class MatchService(
 	sealed class MatchUpdateResult
 	class UpdatedSuccessfully(val updatedMatch: Match) : MatchUpdateResult()
 	object MatchNotFound : MatchUpdateResult()
+	object MatchInconsistency : MatchUpdateResult()
 	object RacetimeInconsistency : MatchUpdateResult()
+	object ProxyError : MatchUpdateResult()
 	object InsufficientRights : MatchUpdateResult()
 }

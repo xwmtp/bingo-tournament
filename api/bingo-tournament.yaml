@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.11
+  version: 0.0.12
 
 servers:
   - url: http://localhost:8080/api
@@ -234,7 +234,7 @@ components:
           description: Entrant's finish time as ISO 8601 duration
         finishTimeSeconds:
           type: integer
-          format: int32
+          format: int64
           description: Entrant's finish time in seconds
         racetimePlace:
           type: integer

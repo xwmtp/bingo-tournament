@@ -19,6 +19,7 @@ class DbEntrant(
 			user = id.user.inApiFormat(),
 			state = state,
 			finishTime = finishTime?.toString(),
+			finishTimeSeconds = finishTime?.toSeconds(),
 			racetimePlace = racetimePlace,
 	)
 

@@ -17,23 +17,27 @@ class RacetimeRecorder(private val client: RacetimeHttpClient) {
 
 		return {
 
-			validate(this, race) ?: throw RacetimeInconsistencyException
+			validate(this, race)
 
 			val raceEntrants = parseEntrants(this, race)
 
 			scheduledTime = race.startedAt
 			state = MatchState.FINISHED
 			this.racetimeId = racetimeId
-			entrants.onEach { raceEntrants[it.userId] }
+			entrants
+					.distinctBy { it.userId } // Why is this necessary?
+					.onEach { raceEntrants[it.userId]?.invoke(it) }
 		}
 	}
 
-	private fun validate(match: DbMatch, race: RacetimeRace): Unit? =
-			if (!race.entrants.map { it.user.id }.containsAll(match.entrants.map { it.userId })) null
-			else if (race.teamRace) null
-			else if (race.status != RacetimeRace.RacetimeRaceStatus.FINISHED) null
-			else if (!race.recorded) null
-			else null
+	private fun validate(match: DbMatch, race: RacetimeRace) =
+			when {
+				!race.entrants.map { it.user.id }.containsAll(match.entrants.map { it.userId }) -> throw RacetimeInconsistencyException("Entrants missing")
+				race.teamRace -> throw RacetimeInconsistencyException("Team race")
+				race.status != RacetimeRace.RacetimeRaceStatus.FINISHED -> throw RacetimeInconsistencyException("Not finished")
+				!race.recorded -> throw RacetimeInconsistencyException("Not recorded")
+				else -> Unit
+			}
 
 	private fun parseEntrants(match: DbMatch, race: RacetimeRace): Map<String, DbEntrant.() -> Unit> {
 
@@ -56,5 +60,5 @@ class RacetimeRecorder(private val client: RacetimeHttpClient) {
 
 	sealed class RecordingException : RuntimeException()
 	object RacetimeHttpErrorException : RecordingException()
-	object RacetimeInconsistencyException : RecordingException()
+	class RacetimeInconsistencyException(val reason: String) : RecordingException()
 }

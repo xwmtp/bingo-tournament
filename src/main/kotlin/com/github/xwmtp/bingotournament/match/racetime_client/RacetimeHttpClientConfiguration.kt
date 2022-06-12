@@ -22,6 +22,7 @@ class RacetimeHttpClientConfiguration {
 	fun racetimeGson(): Gson = GsonBuilder()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 			.registerTypeAdapter(Duration::class.java, durationDeserializer)
+			.registerTypeAdapter(Duration::class.java, durationSerializer)
 			.registerTypeAdapter(Instant::class.java, instantDeserializer)
 			.registerTypeAdapter(Instant::class.java, instantSerializer)
 			.registerTypeAdapter(RacetimeEntrant.RacetimeEntrantStatus::class.java, entrantStatusDeserializer)
@@ -31,6 +32,10 @@ class RacetimeHttpClientConfiguration {
 
 	private val durationDeserializer = JsonDeserializer { json, _, _ ->
 		Duration.parse(json.asString)
+	}
+
+	private val durationSerializer = JsonSerializer<Duration> { duration, _, _ ->
+		JsonPrimitive(duration.toString())
 	}
 
 	private val instantDeserializer = JsonDeserializer { json, _, _ ->

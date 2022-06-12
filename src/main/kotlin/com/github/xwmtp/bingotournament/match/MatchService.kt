@@ -74,7 +74,7 @@ class MatchService(
 
 		return savedMatch
 				.applyIf(match.containsValidScheduledTime()) {
-					if (savedMatch.racetimeId == null) {
+					if (savedMatch.racetimeId != null) {
 						return RacetimeInconsistency
 					}
 					scheduledTime = match.scheduledTime!!.toInstant()
@@ -85,11 +85,14 @@ class MatchService(
 						return InsufficientRights
 					}
 					try {
-						racetimeRecorder.recordRace(match.racetimeId!!)
+						racetimeRecorder.recordRace(match.racetimeId!!).invoke(this)
 					} catch (e: RacetimeRecorder.RecordingException) {
 						return when (e) {
 							RacetimeRecorder.RacetimeHttpErrorException -> ProxyError
-							RacetimeRecorder.RacetimeInconsistencyException -> RacetimeInconsistency
+							is RacetimeRecorder.RacetimeInconsistencyException -> {
+								logger.error("$racetimeId can't be recorded: ${e.reason}")
+								RacetimeInconsistency
+							}
 						}
 					}
 				}

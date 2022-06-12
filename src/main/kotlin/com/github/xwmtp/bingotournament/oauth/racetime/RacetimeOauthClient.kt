@@ -11,12 +11,12 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AccessTokenRespon
 import org.springframework.stereotype.Component
 import org.springframework.util.LinkedMultiValueMap
 import org.springframework.util.MultiValueMap
-import org.springframework.web.client.RestOperations
+import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 
 @Component
 class RacetimeOauthClient(
-		private val restOperations: RestOperations,
+		private val genericRestTemplate: RestTemplate,
 ) : OAuth2AccessTokenResponseClient<OAuth2AuthorizationCodeGrantRequest> {
 
 	override fun getTokenResponse(authorizationGrantRequest: OAuth2AuthorizationCodeGrantRequest): OAuth2AccessTokenResponse? {
@@ -38,7 +38,7 @@ class RacetimeOauthClient(
 		headers.contentType = MediaType.APPLICATION_FORM_URLENCODED
 		headers.add(HttpHeaders.USER_AGENT, "oot-bingo-tournament")
 
-		val token: RacetimeOauthToken = restOperations.exchange<RacetimeOauthToken>(
+		val token: RacetimeOauthToken = genericRestTemplate.exchange<RacetimeOauthToken>(
 				tokenUri, HttpMethod.POST, HttpEntity(tokenRequest, headers)
 		).body ?: return null
 

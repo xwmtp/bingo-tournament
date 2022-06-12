@@ -13,12 +13,12 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Component
-import org.springframework.web.client.RestOperations
+import org.springframework.web.client.RestTemplate
 import org.springframework.web.client.exchange
 
 @Component
 class RacetimeUserService(
-		private val restOperations: RestOperations,
+		private val genericRestTemplate: RestTemplate,
 		private val properties: OauthProperties,
 		private val repository: UserRepository,
 		private val userProperties: UserProperties,
@@ -33,7 +33,7 @@ class RacetimeUserService(
 			set(HttpHeaders.USER_AGENT, "oot-bingo-tournament")
 		}.let { HttpEntity<Map<String, String>>(it) }
 
-		return restOperations
+		return genericRestTemplate
 				.exchange<RacetimeUser>(userInfoUri, HttpMethod.GET, headers)
 				.body
 				?.asOauthUser(properties.racetime.baseUrl)

@@ -90,7 +90,7 @@ class MatchService(
 						return when (e) {
 							RacetimeRecorder.RacetimeHttpErrorException -> ProxyError
 							is RacetimeRecorder.RacetimeInconsistencyException -> {
-								logger.error("$racetimeId can't be recorded: ${e.reason}")
+								logger.error("${match.racetimeId} can't be recorded: ${e.reason}")
 								RacetimeInconsistency
 							}
 						}

@@ -78,6 +78,7 @@ class MatchService(
 						return RacetimeInconsistency
 					}
 					scheduledTime = match.scheduledTime!!.toInstant()
+					state = MatchState.SCHEDULED
 				}
 				.applyIf(match.racetimeId != null) {
 					if (savedMatch.racetimeId != null && DbRole.ADMIN !in currentUser.roles) {

@@ -22,6 +22,9 @@ class DbEntrant(
 			racetimePlace = racetimePlace,
 	)
 
+	val userId: String
+		get() = id.user.id
+
 	@ManyToOne
 	@JoinColumn(name = "db_match_id")
 	var dbMatch: DbMatch? = null

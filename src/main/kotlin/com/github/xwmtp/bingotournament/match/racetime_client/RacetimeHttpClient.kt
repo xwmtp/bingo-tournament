@@ -16,7 +16,7 @@ class RacetimeHttpClient(
 
 	fun getRace(racetimeId: String): RacetimeRace? =
 			racetimeRestTemplate
-					.getForEntity(URI.create("${properties.baseUrl}/$racetimeId"), RacetimeRace::class.java)
+					.getForEntity(URI.create("${properties.baseUrl}/$racetimeId/data"), RacetimeRace::class.java)
 					.also {
 						if (it.statusCode == HttpStatus.OK) {
 							logger.info("Loaded race '$racetimeId'")

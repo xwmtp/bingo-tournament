@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk17:alpine
+FROM eclipse-temurin:17-alpine
 
 COPY build/libs/bingo-leaderboard.jar /usr/bin
 

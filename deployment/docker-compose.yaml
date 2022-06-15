@@ -1,9 +1,7 @@
 version: "3.9"
 services:
   app:
-    build:
-      context: ..
-    image: bingo-tournament
+    image: docker.pkg.github.com/xwmtp/bingo-tournament/bingo-tournament:latest
     container_name: bingo-tournament
     restart: unless-stopped
     volumes:

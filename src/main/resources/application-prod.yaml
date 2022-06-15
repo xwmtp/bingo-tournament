@@ -1,6 +1,6 @@
-baseUrl: https://bingo-tournament.scaramangado.de
-
 bingo:
+  backend:
+    base-url: https://bingo-tournament.scaramangado.de
   frontend:
     base-url: https://xwmtp.github.io/bingo2022
 

@@ -1,4 +1,6 @@
 bingo:
+  backend:
+    base-url: "{baseUrl}"
   frontend:
     base-url: http://localhost:3000
   oauth:
@@ -42,7 +44,7 @@ spring:
             authorizationGrantType: authorization_code
             scope:
               - read
-            redirectUri: "{baseUrl}/login/oauth2/code/racetime"
+            redirectUri: "${bingo.backend.base-url}/login/oauth2/code/racetime"
             clientName: OoT Bingo Tournament
 
   session:

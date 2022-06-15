@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-alpine
 
-COPY build/libs/bingo-leaderboard.jar /usr/bin
+COPY build/libs/bingo-tournament.jar /usr/bin
 
 RUN mkdir /etc/bingo-tournament
 VOLUME ["/etc/bingo-tournament"]

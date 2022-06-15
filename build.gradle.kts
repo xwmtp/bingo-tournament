@@ -30,7 +30,7 @@ java {
 }
 
 tasks.withType<Jar> {
-	archiveBaseName.set("bingo-leaderboard")
+	archiveBaseName.set("bingo-tournament")
 	archiveVersion.set("")
 }
 

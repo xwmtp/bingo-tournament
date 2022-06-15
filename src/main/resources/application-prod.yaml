@@ -1,3 +1,5 @@
+baseUrl: https://bingo-tournament.scaramangado.de
+
 bingo:
   frontend:
     base-url: https://xwmtp.github.io/bingo2022
@@ -10,3 +12,10 @@ gg:
 spring:
   datasource:
     url: jdbc:postgresql://bingo-tournament-db:5432/postgres
+
+logging:
+  file:
+    name: tournament.log
+    max-history: 15
+  pattern:
+    console:

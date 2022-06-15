@@ -18,9 +18,10 @@ services:
       - "5432:5432"
     volumes:
       - "./volumes/db_data:/var/lib/postgresql/data"
+      - "./volumes/db_secrets:/oot/db_secrets"
     environment:
       POSTGRES_USER: sa
-      POSTGRES_PASSWORD_FILE: "./postgres_pwd"
+      POSTGRES_PASSWORD_FILE: "/oot/db_secrets/postgres_pwd"
 
 networks:
   default:

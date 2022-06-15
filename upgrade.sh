@@ -1,4 +1,7 @@
 #!/bin/sh
 
 git pull
-(cd deployment && sudo docker-compose build --pull && sudo docker-compose up -d)
+(cd deployment && \
+  sudo docker-compose down \
+  && sudo docker-compose pull \
+  && sudo docker-compose up -d)

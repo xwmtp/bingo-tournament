@@ -13,5 +13,10 @@ data class RacetimeUser(
 ) {
 
 	fun asOauthUser(racetimeBaseUrl: String) =
-			TournamentOauthUser(id, name, avatar?.let { URI.create("${racetimeBaseUrl}$it") }, twitchChannel)
+			TournamentOauthUser(id, name, avatar.prependTldIfMissing(racetimeBaseUrl), twitchChannel)
+
+	private fun URI?.prependTldIfMissing(tld: String) =
+			if (this == null) null
+			else if (!this.isAbsolute) URI.create("$tld$this")
+			else this
 }

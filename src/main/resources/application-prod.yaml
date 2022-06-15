@@ -1,0 +1,12 @@
+bingo:
+  frontend:
+    base-url: https://xwmtp.github.io/bingo2022
+
+gg:
+  racetime:
+    api:
+      base-url: https://racetime.gg
+
+spring:
+  datasource:
+    url: jdbc:postgresql://bingo-tournament-db:5432/postgres

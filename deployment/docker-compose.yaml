@@ -1,0 +1,30 @@
+version: "3.9"
+services:
+  app:
+    build:
+      context: ..
+    image: bingo-tournament
+    container_name: bingo-tournament
+    restart: unless-stopped
+    volumes:
+      - "./volumes/bingo-tournament:/etc/bingo-tournament"
+    ports:
+      - "8080:80"
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+  db:
+    image: postgres:14-alpine
+    container_name: bingo-tournament-db
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - "./volumes/db_data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD_FILE: "./postgres_pwd"
+
+networks:
+  default:
+    external:
+      name: nginx

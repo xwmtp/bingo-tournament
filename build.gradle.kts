@@ -29,6 +29,11 @@ java {
 	}
 }
 
+tasks.withType<Jar> {
+	archiveBaseName.set("bingo-leaderboard")
+	archiveVersion.set("")
+}
+
 repositories {
 	mavenCentral()
 }

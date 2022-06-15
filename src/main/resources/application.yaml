@@ -50,4 +50,4 @@ spring:
     jdbc:
       initialize-schema: always
     timeout:
-      seconds: 3600
+      days: 10

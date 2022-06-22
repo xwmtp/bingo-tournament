@@ -10,7 +10,7 @@ class CorsConfiguration(private val frontendProperties: FrontendProperties) : We
 
 	override fun addCorsMappings(registry: CorsRegistry) {
 		registry.addMapping("/api/**")
-				.allowedOrigins(frontendProperties.baseUrl)
+				.allowedOrigins(frontendProperties.corsUrl)
 				.allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH")
 				.allowedHeaders("*")
 				.allowCredentials(true)

@@ -3,6 +3,7 @@ bingo:
     base-url: https://bingo-tournament.scaramangado.de
   frontend:
     base-url: https://xwmtp.github.io/bingo2022
+    cors-url: https://xwmtp.github.io
 
 gg:
   racetime:
@@ -11,7 +12,7 @@ gg:
 
 spring:
   datasource:
-    url: jdbc:postgresql://bingo-tournament-db:5432/postgres
+    url: jdbc:postgresql://bingo-tournament-db:6543/postgres
 
 logging:
   file:

@@ -1,6 +1,6 @@
 version: "3.9"
 services:
-  app:
+  backend:
     image: ghcr.io/xwmtp/bingo-tournament/bingo-tournament:latest
     container_name: bingo-tournament
     restart: unless-stopped
@@ -8,6 +8,18 @@ services:
       - "./volumes/bingo-tournament:/etc/bingo-tournament"
     environment:
       SPRING_PROFILES_ACTIVE: prod
+    networks:
+      - nginx
+      - tournament
+  frontend:
+    image: ghcr.io/xwmtp/bingo2022/bingo-tournament-fe:latest
+    container_name: bingo-tournament-fe
+    restart: unless-stopped
+    ports:
+      - "3210:80"
+    networks:
+      - nginx
+      - tournament
   db:
     image: postgres:14-alpine
     container_name: bingo-tournament-db
@@ -18,8 +30,11 @@ services:
     environment:
       POSTGRES_USER: sa
       POSTGRES_PASSWORD_FILE: "/oot/db_secrets/postgres_pwd"
+    networks:
+      - tournament
 
 networks:
-  default:
-    external:
-      name: nginx
+  nginx:
+    name: nginx
+    external: true
+  tournament:

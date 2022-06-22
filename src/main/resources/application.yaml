@@ -53,4 +53,10 @@ spring:
     jdbc:
       initialize-schema: always
     timeout:
-      days: 10
+      seconds: 2592000
+
+server:
+  servlet:
+    session:
+      cookie:
+        max-age: 2592000s

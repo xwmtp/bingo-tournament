@@ -8,3 +8,5 @@ IMAGE_ID=docker.pkg.github.com/xwmtp/bingo-tournament/$IMAGE_NAME
 docker build . --tag $IMAGE_NAME
 docker tag $IMAGE_NAME $IMAGE_ID:latest
 docker push $IMAGE_ID:latest
+
+docker logout

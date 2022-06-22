@@ -7,5 +7,5 @@ import org.springframework.stereotype.Component
 @ConfigurationProperties("bingo.frontend")
 class FrontendProperties(
 		var baseUrl: String = "",
-		val corsUrl: String = "",
+		var corsUrl: String = "",
 )

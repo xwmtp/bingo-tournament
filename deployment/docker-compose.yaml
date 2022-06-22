@@ -12,8 +12,6 @@ services:
     image: postgres:14-alpine
     container_name: bingo-tournament-db
     restart: unless-stopped
-    ports:
-      - "6543:5432"
     volumes:
       - "./volumes/db_data:/var/lib/postgresql/data"
       - "./volumes/db_secrets:/oot/db_secrets"

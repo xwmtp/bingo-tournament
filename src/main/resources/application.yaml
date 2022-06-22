@@ -3,6 +3,7 @@ bingo:
     base-url: "{baseUrl}"
   frontend:
     base-url: http://localhost:3000
+    cors-url: "${bingo.frontend.base-url}"
   oauth:
     racetime:
       base-url: "${gg.racetime.api.base-url}"

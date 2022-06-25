@@ -32,6 +32,20 @@ paths:
                 $ref: "#/components/schemas/User"
         401:
           description: No user logged in
+  /allUsers:
+    get:
+      summary: Get user list
+      description: Returns a list of all users. Only admins can retrieve this information.
+      operationId: getAllUsers
+      responses:
+        200:
+          description: The user list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
   /entrants:
     get:
       summary: Get entrant list

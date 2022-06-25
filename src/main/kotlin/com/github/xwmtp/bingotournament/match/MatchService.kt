@@ -30,8 +30,8 @@ class MatchService(
 	@Transactional(rollbackFor = [Exception::class])
 	fun addNewMatch(newMatch: NewMatch): Match? {
 
-		if (newMatch.entrantIds.size < 2) {
-			logger.error("Cannot create race with less than two entrants")
+		if (newMatch.entrantIds.isEmpty()) {
+			logger.error("Cannot create race without any entrants")
 			return null
 		}
 

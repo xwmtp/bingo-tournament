@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.12
+  version: 0.0.13
 
 servers:
   - url: http://localhost:8080/api
@@ -32,6 +32,20 @@ paths:
                 $ref: "#/components/schemas/User"
         401:
           description: No user logged in
+  /allUsers:
+    get:
+      summary: Get user list
+      description: Returns a list of all users. Only admins can retrieve this information.
+      operationId: getAllUsers
+      responses:
+        200:
+          description: The user list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
   /entrants:
     get:
       summary: Get entrant list
@@ -69,6 +83,52 @@ paths:
           description: User is withdrawn
         401:
           description: No user logged in
+  /role:
+    put:
+      summary: Add a role (Admin only)
+      description: Adds a role to a user. The ADMIN role cannot be added or removed.
+      operationId: addRole
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          description: ID of the user who will receive the new role
+          schema:
+            type: string
+        - name: role
+          required: true
+          in: query
+          description: The role
+          schema:
+            $ref: "#/components/schemas/Role"
+      responses:
+        204:
+          description: Role added successfully
+        404:
+          description: User not found
+    delete:
+      summary: Remove a role (Admin only)
+      description: Removes a role from a user. The ADMIN role cannot be added or removed.
+      operationId: removeRole
+      parameters:
+        - name: userId
+          required: true
+          in: query
+          description: ID of the user who will have a role removed
+          schema:
+            type: string
+        - name: role
+          required: true
+          in: query
+          description: The role
+          schema:
+            $ref: "#/components/schemas/Role"
+      responses:
+        204:
+          description: Role removed successfully
+        404:
+          description: User not found
+
   /matches:
     get:
       summary: Load match data
@@ -100,7 +160,7 @@ paths:
                   $ref: "#/components/schemas/Match"
     post:
       summary: Add matches to the tournament
-      description: Allows admisitrators to add mutliple matches to the ongoing tournament.
+      description: Allows administrators to add multiple matches to the ongoing tournament.
       operationId: addMatches
       requestBody:
         required: true
@@ -191,6 +251,35 @@ paths:
         502:
           description: An error occurred while communicating with the Racetime server
 
+  /restream:
+    put:
+      summary: Add restream info to a match
+      description: >
+        Set the URL of the restream channel for a given match. Restreamers are allowed to set a channel while the field
+        is empty, admins may overwrite.
+      operationId: setRestreamChannel
+      parameters:
+        - name: matchId
+          required: true
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: restreamChannel
+          required: false
+          in: query
+          description: The URL to the restream. When empty any existing URL will be removed from the match.
+          schema:
+            type: string
+            format: uri
+      responses:
+        204:
+          description: URL successfully updated
+        404:
+          description: Match not found
+        409:
+          description: The URL is already set and may only be updated by admins
+
 components:
   schemas:
     User:
@@ -219,6 +308,7 @@ components:
       enum:
         - ADMIN
         - ENTRANT
+        - RESTREAMER
     Entrant:
       type: object
       properties:

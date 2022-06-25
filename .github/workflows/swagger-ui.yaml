@@ -3,7 +3,7 @@ name: Build and publish Swagger Documentaion
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - api/**.yaml
       - .github/workflows/swagger-ui.yaml

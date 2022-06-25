@@ -3,7 +3,7 @@ name: Build and publish NPM Package
 on:
   push:
     branches:
-      - master
+      - main
     paths:
       - api/**.yaml
       - .github/workflows/npm.yaml

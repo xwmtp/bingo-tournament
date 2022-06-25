@@ -1,5 +1,9 @@
 # Bingo Tournament Backend
 
+## Api documentation
+
+https://xwmtp.github.io/bingo-tournament
+
 ## Setup
 
 ### Racetime

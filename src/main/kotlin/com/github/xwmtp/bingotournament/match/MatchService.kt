@@ -13,6 +13,7 @@ import com.github.xwmtp.bingotournament.util.takeIfExactlyOnePropertySet
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.net.URI
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -98,6 +99,18 @@ class MatchService(
 				}
 				.let { repository.save(it) }
 				.let { UpdatedSuccessfully(it.inApiFormat()) }
+	}
+
+	fun updateRestream(matchId: UUID, restreamChannel: URI?): MatchUpdateResult {
+
+		val match = repository.findById(matchId) ?: return MatchNotFound
+
+		if (match.restreamChannel != null && DbRole.ADMIN !in (userService.getCurrentUser()?.roles ?: emptySet())) {
+			return InsufficientRights
+		}
+
+		match.restreamChannel = restreamChannel?.toString()
+		return UpdatedSuccessfully(repository.save(match).inApiFormat())
 	}
 
 	private fun UpdateMatch.containsValidScheduledTime() =

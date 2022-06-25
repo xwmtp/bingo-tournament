@@ -1,20 +1,25 @@
 package com.github.xwmtp.bingotournament.match
 
 import com.github.xwmtp.api.MatchesApi
+import com.github.xwmtp.api.RestreamApi
 import com.github.xwmtp.api.model.Match
 import com.github.xwmtp.api.model.MatchState
 import com.github.xwmtp.api.model.NewMatch
 import com.github.xwmtp.api.model.UpdateMatch
+import com.github.xwmtp.bingotournament.role.ADMIN_ROLE
+import com.github.xwmtp.bingotournament.role.RESTREAMER_ROLE
 import com.github.xwmtp.bingotournament.security.AdminOnly
 import com.github.xwmtp.bingotournament.security.EntrantOnly
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.annotation.Secured
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 import java.util.*
 
 @RestController
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-class MatchRestController(private val service: MatchService) : MatchesApi {
+class MatchRestController(private val service: MatchService) : MatchesApi, RestreamApi {
 
 	@AdminOnly
 	override fun addMatches(matches: List<NewMatch>): ResponseEntity<List<Match>> =
@@ -41,5 +46,14 @@ class MatchRestController(private val service: MatchService) : MatchesApi {
 				MatchService.RacetimeInconsistency -> ResponseEntity.unprocessableEntity().build()
 				MatchService.ProxyError -> ResponseEntity.status(HttpStatus.BAD_GATEWAY).build()
 				MatchService.InsufficientRights -> ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+			}
+
+	@Secured(ADMIN_ROLE, RESTREAMER_ROLE)
+	override fun setRestreamChannel(matchId: UUID, restreamChannel: URI?): ResponseEntity<Unit> =
+			when (service.updateRestream(matchId, restreamChannel)) {
+				is MatchService.UpdatedSuccessfully -> ResponseEntity.noContent().build()
+				MatchService.MatchNotFound -> ResponseEntity.notFound().build()
+				MatchService.InsufficientRights -> ResponseEntity.status(HttpStatus.CONFLICT).build()
+				else -> ResponseEntity.internalServerError().build()
 			}
 }

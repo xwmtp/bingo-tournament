@@ -237,6 +237,35 @@ paths:
         502:
           description: An error occurred while communicating with the Racetime server
 
+  /restream:
+    put:
+      summary: Add restream info to a match
+      description: >
+        Set the URL of the restream channel for a given match. Restreamers are allowed to set a channel while the field
+        is empty, admins may overwrite.
+      operationId: setRestreamChannel
+      parameters:
+        - name: matchId
+          required: true
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: restreamChannel
+          required: false
+          in: query
+          description: The URL to the restream. When empty any existing URL will be removed from the match.
+          schema:
+            type: string
+            format: uri
+      responses:
+        204:
+          description: URL successfully updated
+        404:
+          description: Match not found
+        409:
+          description: The URL is already set and may only be updated by admins
+
 components:
   schemas:
     User:

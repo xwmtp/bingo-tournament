@@ -11,6 +11,9 @@ bingo:
     admins:
       - d17DexWEKg3ak64R
       - pRbOXG3ykOWZVKq1
+    update-job:
+      enabled: true
+      cron: 0 0 6 * * ?
 
 gg:
   racetime:
@@ -58,5 +61,6 @@ spring:
 server:
   servlet:
     session:
+      timeout: 2592000s
       cookie:
         max-age: 2592000s

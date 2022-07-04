@@ -26,7 +26,7 @@ class TournamentOauthUser(
 		roles.map { SimpleGrantedAuthority(it.role) }.forEach { authorities.add(it) }
 	}
 
-	fun newDbUser() = DbUser(
+	fun asDbUser() = DbUser(
 			id, username, avatarUrl?.toString(), twitchChannel?.toString(),
 	)
 }

@@ -1,5 +1,7 @@
 package com.github.xwmtp.bingotournament.match.racetime_client
 
+import com.github.xwmtp.bingotournament.oauth.racetime.RacetimeUser
+import com.github.xwmtp.bingotournament.user.DbUser
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
@@ -24,4 +26,15 @@ class RacetimeHttpClient(
 							logger.error("Failed to load race '$racetimeId'. Status: ${it.statusCodeValue}")
 						}
 					}.body
+
+	fun getUser(id: String): DbUser? =
+			racetimeRestTemplate
+					.getForEntity(URI.create("${properties.baseUrl}/$id/data"), RacetimeUser::class.java)
+					.also {
+						if (it.statusCode == HttpStatus.OK) {
+							logger.info("Loaded user ${it.body?.name}")
+						} else {
+							logger.error("Failed to load user $id")
+						}
+					}.body?.asOauthUser(properties.baseUrl)?.asDbUser()
 }

@@ -41,7 +41,7 @@ class RacetimeUserService(
 	}
 
 	private fun getOrCreateDbUser(oauthUser: TournamentOauthUser): DbUser =
-			repository.findById(oauthUser.id) ?: repository.save(oauthUser.newDbUser().checkForAdmin())
+			repository.findById(oauthUser.id) ?: repository.save(oauthUser.asDbUser().checkForAdmin())
 
 	private fun DbUser.checkForAdmin(): DbUser {
 

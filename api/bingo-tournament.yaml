@@ -3,11 +3,13 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.13
+  version: 0.0.14
 
 servers:
   - url: http://localhost:8080/api
     description: Local development environment
+  - url: https://bingo-tournament.scaramangado.de/api
+    description: Production environment
 
 paths:
   /health:

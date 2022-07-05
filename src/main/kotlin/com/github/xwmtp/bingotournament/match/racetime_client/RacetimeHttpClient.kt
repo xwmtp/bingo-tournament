@@ -29,7 +29,7 @@ class RacetimeHttpClient(
 
 	fun getUser(id: String): DbUser? =
 			racetimeRestTemplate
-					.getForEntity(URI.create("${properties.baseUrl}/$id/data"), RacetimeUser::class.java)
+					.getForEntity(URI.create("${properties.baseUrl}/user/$id/data"), RacetimeUser::class.java)
 					.also {
 						if (it.statusCode == HttpStatus.OK) {
 							logger.info("Loaded user ${it.body?.name}")

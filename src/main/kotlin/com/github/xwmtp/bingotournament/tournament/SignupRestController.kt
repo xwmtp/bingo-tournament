@@ -19,6 +19,10 @@ class SignupRestController(
 
 	override fun signUp(): ResponseEntity<Unit> {
 
+		if (true) {
+			return ResponseEntity.notFound().build()
+		}
+
 		val user = userService.getCurrentUser() ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
 		logger.debug("Signup called for user: ${user.id}")
 
@@ -31,6 +35,10 @@ class SignupRestController(
 	}
 
 	override fun withdraw(): ResponseEntity<Unit> {
+
+		if (true) {
+			return ResponseEntity.notFound().build()
+		}
 
 		val user = userService.getCurrentUser() ?: return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build()
 		logger.debug("Withdraw called for user: ${user.id}")

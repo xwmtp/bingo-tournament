@@ -49,7 +49,7 @@ class RacetimeRecorder(private val client: RacetimeHttpClient) {
 				.sortedBy { it.place }
 				.forEach {
 					map[it.user.id] = {
-						finishTime = it.finishTime
+						finishTime = if (it.status == DONE) it.finishTime else null
 						racetimePlace = if (it.status == DONE) place++ else null
 						state = if (it.status == DONE) EntrantState.FINISHED else EntrantState.DID_NOT_FINISH
 					}

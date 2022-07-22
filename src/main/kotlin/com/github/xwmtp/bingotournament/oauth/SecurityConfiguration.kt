@@ -6,9 +6,11 @@ import com.github.xwmtp.bingotournament.util.FrontendProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.http.HttpStatus
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 
 @Configuration
@@ -30,7 +32,7 @@ class SecurityConfiguration(
 				.and().defaultSuccessUrl(frontendProperties.baseUrl, true)
 
 		http.logout()
-				.logoutSuccessUrl(frontendProperties.baseUrl)
+				.logoutSuccessHandler(HttpStatusReturningLogoutSuccessHandler(HttpStatus.NO_CONTENT))
 
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 

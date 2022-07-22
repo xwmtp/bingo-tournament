@@ -37,6 +37,7 @@ class SecurityConfiguration(
 		http.authorizeRequests()
 				.antMatchers("/api/health", "/login").permitAll()
 				.antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/logout").permitAll()
 				.antMatchers(HttpMethod.GET, "/api/matches").permitAll()
 				.antMatchers(HttpMethod.GET, "/api/entrants").permitAll()
 				.anyRequest().authenticated()

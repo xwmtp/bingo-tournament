@@ -29,6 +29,9 @@ class SecurityConfiguration(
 				.and().userInfoEndpoint().userService(racetimeUserService)
 				.and().defaultSuccessUrl(frontendProperties.baseUrl, true)
 
+		http.logout()
+				.logoutSuccessUrl(frontendProperties.baseUrl)
+
 		http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
 
 		http.authorizeRequests()

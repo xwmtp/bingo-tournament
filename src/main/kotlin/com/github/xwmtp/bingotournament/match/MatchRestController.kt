@@ -46,6 +46,7 @@ class MatchRestController(private val service: MatchService) : MatchesApi, Restr
 				MatchService.RacetimeInconsistency -> ResponseEntity.unprocessableEntity().build()
 				MatchService.ProxyError -> ResponseEntity.status(HttpStatus.BAD_GATEWAY).build()
 				MatchService.InsufficientRights -> ResponseEntity.status(HttpStatus.FORBIDDEN).build()
+				MatchService.UserNotFound -> ResponseEntity.internalServerError().build()
 			}
 
 	@Secured(ADMIN_ROLE, RESTREAMER_ROLE)

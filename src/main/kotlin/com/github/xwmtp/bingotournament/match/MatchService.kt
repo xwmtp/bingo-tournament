@@ -104,12 +104,14 @@ class MatchService(
 	fun updateRestream(matchId: UUID, restreamChannel: URI?): MatchUpdateResult {
 
 		val match = repository.findById(matchId) ?: return MatchNotFound
+		val user = userService.getCurrentUser() ?: return UserNotFound
 
-		if (match.restreamChannel != null && DbRole.ADMIN !in (userService.getCurrentUser()?.roles ?: emptySet())) {
+		if (match.restreamChannel != null && DbRole.ADMIN !in user.roles) {
 			return InsufficientRights
 		}
 
 		match.restreamChannel = restreamChannel?.toString()
+		match.restreamUser = user
 		return UpdatedSuccessfully(repository.save(match).inApiFormat())
 	}
 
@@ -125,6 +127,7 @@ class MatchService(
 	sealed class MatchUpdateResult
 	class UpdatedSuccessfully(val updatedMatch: Match) : MatchUpdateResult()
 	object MatchNotFound : MatchUpdateResult()
+	object UserNotFound : MatchUpdateResult()
 	object MatchInconsistency : MatchUpdateResult()
 	object RacetimeInconsistency : MatchUpdateResult()
 	object ProxyError : MatchUpdateResult()

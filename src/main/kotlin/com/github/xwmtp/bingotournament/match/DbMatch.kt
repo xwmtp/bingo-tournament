@@ -2,6 +2,7 @@ package com.github.xwmtp.bingotournament.match
 
 import com.github.xwmtp.api.model.Match
 import com.github.xwmtp.api.model.MatchState
+import com.github.xwmtp.bingotournament.user.DbUser
 import java.net.URI
 import java.time.Instant
 import java.time.ZoneOffset
@@ -20,6 +21,8 @@ class DbMatch(
 		var scheduledTime: Instant? = null,
 		var racetimeId: String? = null,
 		var restreamChannel: String? = null,
+		@ManyToOne(cascade = [], fetch = FetchType.EAGER) @JoinColumn(name = "user_id")
+		var restreamUser: DbUser? = null,
 ) {
 
 	fun inApiFormat() = Match(
@@ -30,5 +33,6 @@ class DbMatch(
 			scheduledTime = scheduledTime?.atOffset(ZoneOffset.UTC),
 			racetimeId = racetimeId,
 			restreamChannel = restreamChannel?.let { URI.create(it) },
+			restreamUser = restreamUser?.inApiFormat(),
 	)
 }

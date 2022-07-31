@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.14
+  version: 0.0.15
 
 servers:
   - url: http://localhost:8080/api
@@ -357,6 +357,9 @@ components:
         restreamChannel:
           type: string
           format: uri
+        restreamUser:
+          type: object
+          $ref: "#/components/schemas/User"
       required:
         - id
         - entrants

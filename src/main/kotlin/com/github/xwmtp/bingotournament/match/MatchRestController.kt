@@ -2,6 +2,7 @@ package com.github.xwmtp.bingotournament.match
 
 import com.github.xwmtp.api.MatchesApi
 import com.github.xwmtp.api.RestreamApi
+import com.github.xwmtp.api.VodApi
 import com.github.xwmtp.api.model.Match
 import com.github.xwmtp.api.model.MatchState
 import com.github.xwmtp.api.model.NewMatch
@@ -19,7 +20,7 @@ import java.util.*
 
 @RestController
 @Suppress("PARAMETER_NAME_CHANGED_ON_OVERRIDE")
-class MatchRestController(private val service: MatchService) : MatchesApi, RestreamApi {
+class MatchRestController(private val service: MatchService) : MatchesApi, RestreamApi, VodApi {
 
 	@AdminOnly
 	override fun addMatches(matches: List<NewMatch>): ResponseEntity<List<Match>> =
@@ -55,6 +56,15 @@ class MatchRestController(private val service: MatchService) : MatchesApi, Restr
 				is MatchService.UpdatedSuccessfully -> ResponseEntity.noContent().build()
 				MatchService.MatchNotFound -> ResponseEntity.notFound().build()
 				MatchService.InsufficientRights -> ResponseEntity.status(HttpStatus.CONFLICT).build()
+				else -> ResponseEntity.internalServerError().build()
+			}
+
+	@AdminOnly
+	override fun setVodUrl(matchId: UUID, vodUrl: URI?): ResponseEntity<Unit> =
+			when (service.updateVod(matchId, vodUrl)) {
+				is MatchService.UpdatedSuccessfully -> ResponseEntity.noContent().build()
+				MatchService.MatchNotFound -> ResponseEntity.notFound().build()
+				MatchService.MatchInconsistency -> ResponseEntity.status(HttpStatus.CONFLICT).build()
 				else -> ResponseEntity.internalServerError().build()
 			}
 }

@@ -115,6 +115,18 @@ class MatchService(
 		return UpdatedSuccessfully(repository.save(match).inApiFormat())
 	}
 
+	fun updateVod(matchId: UUID, vodUrl: URI?): MatchUpdateResult {
+
+		val match = repository.findById(matchId) ?: return MatchNotFound
+
+		if (match.state != MatchState.FINISHED) {
+			return MatchInconsistency
+		}
+
+		match.vodUrl = vodUrl?.toString()
+		return UpdatedSuccessfully(repository.save(match).inApiFormat())
+	}
+
 	private fun UpdateMatch.containsValidScheduledTime() =
 			scheduledTime != null && scheduledTime.isAfter(OffsetDateTime.now())
 

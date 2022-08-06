@@ -3,7 +3,7 @@ openapi: 3.0.3
 info:
   title: Bingo Tournament API
   description: API used to schedule races and query race results
-  version: 0.0.15
+  version: 0.0.16
 
 servers:
   - url: http://localhost:8080/api
@@ -282,6 +282,35 @@ paths:
         409:
           description: The URL is already set and may only be updated by admins
 
+  /vod:
+    put:
+      summary: Add VOD info to a match
+      description: >
+        Set the URL of a restream VOD for a given match. This can only be done by admins and after a match has been
+        recorded. The URL can be overwritten.
+      operationId: setVodUrl
+      parameters:
+        - name: matchId
+          required: true
+          in: query
+          schema:
+            type: string
+            format: uuid
+        - name: vodUrl
+          required: false
+          in: query
+          description: The URL to the VOD. When empty any existing URL will be removed from the match.
+          schema:
+            type: string
+            format: uri
+      responses:
+        204:
+          description: URL successfully updated
+        404:
+          description: Match not found
+        409:
+          description: The match has not been recorded yet
+
 components:
   schemas:
     User:
@@ -360,6 +389,9 @@ components:
         restreamUser:
           type: object
           $ref: "#/components/schemas/User"
+        vodUrl:
+          type: string
+          format: uri
       required:
         - id
         - entrants

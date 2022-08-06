@@ -19,3 +19,6 @@ logging:
     max-history: 15
   pattern:
     console:
+  logback:
+    rollingpolicy:
+      file-name-pattern: tournament_%d{yyyy-MM-dd}_%i.log

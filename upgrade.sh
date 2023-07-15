@@ -1,8 +1,8 @@
 #!/bin/sh
 
-(cd deployment && sudo docker-compose down)
+(cd deployment && docker compose down)
 
 git pull
 (cd deployment \
-  && sudo docker-compose pull \
-  && sudo docker-compose up -d)
+  && docker compose pull \
+  && docker compose up -d)

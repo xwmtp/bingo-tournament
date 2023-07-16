@@ -64,3 +64,6 @@ server:
       timeout: 2592000s
       cookie:
         max-age: 2592000s
+  error:
+    whitelabel:
+      enabled: false

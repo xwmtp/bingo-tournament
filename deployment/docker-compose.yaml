@@ -12,7 +12,7 @@ services:
       - nginx
       - tournament
     depends_on:
-      - db
+      - tournament-db
   frontend:
     image: ghcr.io/xwmtp/bingo2023/bingo-tournament-fe:latest
     container_name: bingo-tournament-fe
@@ -24,7 +24,7 @@ services:
       - tournament
     depends_on:
       - backend
-  db:
+  tournament-db:
     image: postgres:14-alpine
     container_name: bingo-tournament-db
     restart: unless-stopped

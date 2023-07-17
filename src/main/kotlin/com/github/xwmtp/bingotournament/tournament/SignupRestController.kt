@@ -13,13 +13,14 @@ import org.springframework.stereotype.Component
 class SignupRestController(
 		private val userService: UserService,
 		private val repository: UserRepository,
+		private val properties: TournamentProperties,
 ) : SignupApi {
 
 	private val logger = LoggerFactory.getLogger(SignupRestController::class.java)
 
 	override fun signUp(): ResponseEntity<Unit> {
 
-		if (true) {
+		if (!properties.allowSignups) {
 			return ResponseEntity.notFound().build()
 		}
 
@@ -36,7 +37,7 @@ class SignupRestController(
 
 	override fun withdraw(): ResponseEntity<Unit> {
 
-		if (true) {
+		if (!properties.allowSignups) {
 			return ResponseEntity.notFound().build()
 		}
 
